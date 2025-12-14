@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Cart() {
+  const [couponCode, setCouponCode] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [error, setError] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const [noExtraPackaging, setNoExtraPackaging] = useState(false);
   const [isBulk, setIsBulk] = useState(false);
@@ -35,7 +38,20 @@ function Cart() {
     script.async = true;
     document.body.appendChild(script);
   }, []);
-
+  
+    const applyCoupon = async () => {
+    try {
+      const res = await axios.post('/api/coupons/apply', { code: couponCode });
+      if (res.data.success) {
+        setDiscount(res.data.discount);
+        setError('');
+      } else {
+        setError('Invalid or expired coupon');
+      }
+    } catch (err) {
+      setError('Server error');
+    }
+  };
 
   const updateQuantity = (index, newQty) => {
     const newCart = [...cartItems];
@@ -144,13 +160,30 @@ function Cart() {
       </div>
 
       {cartItems.length > 0 && (
-        <>
-          <h5 className="mt-3">Total: ₹{total}</h5>
-          <button className="btn btn-success mt-3" onClick={handlePlaceOrder}>
-            Place Order
-          </button>
-        </>
-      )}
+  <>
+    <div className="mt-3">
+      <input
+        type="text"
+        placeholder="Enter Coupon Code"
+        className="form-control mb-2"
+        value={couponCode}
+        onChange={(e) => setCouponCode(e.target.value)}
+      />
+      <button className="btn btn-primary" onClick={applyCoupon}>Apply</button>
+      {error && <p className="text-danger mt-2">{error}</p>}
+      {discount > 0 && <p className="text-success mt-2">✅ Coupon applied: {discount}% off</p>}
+    </div>
+
+    <h5 className="mt-3">
+      Total: ₹{total - Math.round((total * discount) / 100)}
+    </h5>
+
+    <button className="btn btn-success mt-3" onClick={handlePlaceOrder}>
+      Place Order
+    </button>
+  </>
+)}
+
     </div>
   );
 }

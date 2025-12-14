@@ -105,3 +105,46 @@ header .roundpoint {
     padding: 1rem !important;
   }
 }
+/* Card styling */
+
+.food-card .card-title {
+  color: #555;                 /* normal gray */
+  transition: color 0.35s ease;
+}
+
+/* Card title on hover */
+.food-card:hover .card-title {
+  color: #111;                 /* blackish */
+}
+
+.food-card:hover .card-title {
+  color: #111;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.food-card {
+  cursor: pointer;
+  transition: all 0.35s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  align-items: center;
+}
+
+/* Image with inner white border */
+.food-card img {
+  border: 15px solid white;   /* ✅ 5px white border */
+  box-sizing: border-box;
+  transition: transform 0.35s ease;
+}
+
+/* Hover effect */
+.food-card:hover {
+  transform: translateY(-15px) scale(1.03);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+}
+
+/* Optional: slight zoom on image */
+.food-card:hover img {
+  transform: scale(1.10);
+}

@@ -6,6 +6,8 @@ import canteenImg from '../assets/canteen.jpeg';
 import brioImg from '../assets/brio.jpeg';
 import avisCafeImg from '../assets/avisCafe.jpeg';
 import StationaryImg from '../assets/stationary.jpeg';
+import GoGreen from '../Components/GoGreen';
+import AboutUs from '../Pages/About';
 import CanteenMenu from '../Menu/CanteenMenu';
 import BrioMenu from '../Menu/BrioMenu';
 import AvisCafeMenu from '../Menu/AvisCafeMenu';
@@ -36,19 +38,31 @@ function Home() {
   return (
     <div>
       {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light px-3">
+      <nav
+  className="navbar navbar-expand-lg px-3"
+  style={{
+    background: 'rgba(0, 0, 0, 0.3)', // blackish transparent
+    backdropFilter: 'blur(12px)',     // glass blur
+    WebkitBackdropFilter: 'blur(12px)', // Safari support
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    position: 'fixed',
+    width: '100%',
+    top: 0,
+    zIndex: 1000
+  }}
+>
         <div className="d-flex align-items-center">
           <img src={logo} alt="Logo" width="40" height="40" />
-          <h5 className="ms-2 mb-0">MealMates</h5>
+          <h5 className="ms-2 mb-0 text-white">MealMates</h5>
         </div>
         
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to ="/">Home</Nav.Link>
-            <Nav.Link as={Link} to ="/about" >About</Nav.Link>
-            <Nav.Link as={Link} to ="/contact" >Contact</Nav.Link>
-            <Nav.Link as={Link} to ="/GoGreen" ><button className="btn btn-outline-success me-2" onClick={() => navigate('/gogreen')}>Go Axis Green</button></Nav.Link>
+            <Nav.Link as={Link} to ="/" className="text-white">Home</Nav.Link>
+            <Nav.Link as={Link} to ="/about"  className="text-white">About</Nav.Link>
+            <Nav.Link as={Link} to ="/contact"  className="text-white">Contact</Nav.Link>
+            <Nav.Link as={Link} to ="/GoGreen" className="text-white"><button className="btn btn-outline-success text-white border-white me-2" onClick={() => navigate('/gogreen')}>Go Axis Green</button></Nav.Link>
             <Nav.Link as={Link} to ="/cart" ><div className="cart"><button className="btn btn-outline-warning me-2" onClick={() => navigate('/cart')}><i className="bi bi-bag fs-5"></i></button></div></Nav.Link>
             <Nav.Link as={Link} to="/login">
               <button className="btn btn-primary">Login / Signup</button>
@@ -97,14 +111,84 @@ function Home() {
         </Navbar.Collapse>
         
       </nav>
-
-      {/* Menu Options */}
+       <div style={{ 
+        position: 'relative', 
+        height: '500px', 
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        {/* Video Background */}
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: 1
+          }}
+        >
+          <source src="src\assets\vd1.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Dark Overlay */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 2
+        }}></div>
+        
+        {/* Content */}
+        <div style={{ 
+          position: 'relative', 
+          zIndex: 3, 
+          textAlign: 'center',
+          color: 'white',
+          padding: '20px'
+        }}>
+          <h5 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: '300',
+            marginBottom: '10px',
+            letterSpacing: '2px'
+          }}>WELCOME</h5>
+          <h1 style={{ 
+            fontSize: 'clamp(2.5rem, 8vw, 4rem)', 
+            fontWeight: 'bold',
+            marginBottom: '20px'
+          }}>Order Food</h1>
+          <p style={{ 
+            fontSize: '1rem',
+            marginBottom: '30px'
+          }}>Select your best food</p>
+        </div>
+      </div>
+      {/* Menu Options 
       <div className="container text-center mt-4" style={{ backgroundColor: 'MediumAquaMarine' }}>
-        <h2>Menu</h2>
-        <div className="row" >
-          <div className="col-md-4 my-3">
+        <h2>Menu</h2>*/}
+        <div
+         style={{
+          position: 'relative',
+           top: '-60px',         
+          zIndex: 20
+         }}
+        >
+        <div className="row gx-5 justify-content-center">
+
+          <div className="col-md-3 my-3">
             <div
-              className="card"
+              className="card food-card"
               onClick={() => handleMenuClick('canteen')}
               style={{ cursor: 'pointer' }}
             >
@@ -114,9 +198,9 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className="col-md-4 my-3">
+          <div className="col-md-3 my-3">
             <div
-              className="card"
+              className="card food-card"
               onClick={() => handleMenuClick('brio')}
               style={{ cursor: 'pointer' }}
             >
@@ -126,9 +210,9 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className="col-md-4 my-3">
+          <div className="col-md-3 my-3">
             <div
-              className="card"
+              className="card food-card"
               onClick={() => handleMenuClick('avisCafe')}
               style={{ cursor: 'pointer' }}
             >
@@ -138,9 +222,9 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className="col-md-4 my-3">
+          <div className="col-md-3 my-3">
             <div
-              className="card"
+              className="card food-card"
               onClick={() => handleMenuClick('stationary')}
               style={{ cursor: 'pointer' }}
             >
@@ -153,7 +237,15 @@ function Home() {
         </div>
 
         
-      </div>
+    </div> 
+    {/* Go Green Section below cards */}
+<div style={{ marginTop: '-40px' }}>
+  <GoGreen />
+</div>
+<div style={{ marginTop: '-40px' }}>
+  <AboutUs />
+</div>
+ 
     </div>
   );
 }

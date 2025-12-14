@@ -1,32 +1,31 @@
-import express from "express";
-import Razorpay from "razorpay";
-import dotenv from "dotenv";
-
-dotenv.config();
+// routes/payment.js
+import express from 'express';
+import razorpay from '../lib/razorpayClient.js';       // ← your single shared client
+import { createPaymentIntent } from '../controllers/paymentController.js';
 
 const router = express.Router();
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_SECRET,
-});
+// 1) Create‑Payment‑Intent endpoint
+router.post('/create-payment-intent', createPaymentIntent);
 
-router.post("/create-order", async (req, res) => {
+// 2) Create‑Order endpoint (if you still want it here)
+router.post('/create-order', async (req, res) => {
   const { amount } = req.body;
-
-  const options = {
-    amount: amount, // amount in paise (e.g., 50000 = ₹500)
-    currency: "INR",
-    receipt: "receipt_order_" + new Date().getTime(),
-  };
-
+  if (typeof amount !== 'number' || amount <= 0) {
+    return res.status(400).json({ error: 'Invalid amount' });
+  }
   try {
-    const order = await razorpay.orders.create(options);
-    res.json(order); // returns id, amount, currency, etc.
+    const order = await razorpay.orders.create({
+      amount,
+      currency: 'INR',
+      receipt: `receipt_order_${Date.now()}`
+    });
+    res.json(order);
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Error creating Razorpay order");
+    console.error('Error creating Razorpay order:', err);
+    res.status(502).json({ error: 'Failed to create order' });
   }
 });
 
 export default router;
+
